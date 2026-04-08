@@ -3,111 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ocean Infinity</title>
+    <title>Ocean Infinity | Founder Board</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        :root { --accent: #00f2ff; --bg: #010a13; --blue: #0077be; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
-        header { padding: 20px; display: flex; justify-content: flex-end; gap: 10px; }
-        .lang-btn { background: none; border: 1px solid var(--accent); color: var(--accent); cursor: pointer; padding: 5px 10px; border-radius: 5px; }
-        .container { padding: 20px; max-width: 900px; margin: 0 auto; }
-        h1 { font-size: 3rem; text-shadow: 0 0 20px var(--blue); margin: 10px 0; }
-        .motto { font-style: italic; color: var(--accent); margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin: 30px 0; }
-        .card { border: 1px solid var(--blue); padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.05); transition: 0.3s; }
-        .card:hover { border-color: var(--accent); box-shadow: 0 0 15px var(--blue); }
-        .price { font-size: 1.4rem; font-weight: bold; color: var(--accent); display: block; }
-        .btn { background: var(--blue); color: white; border: none; padding: 20px 60px; font-size: 1.4rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 0 20px var(--blue); }
-        .btn:hover { background: var(--accent); color: black; box-shadow: 0 0 30px var(--accent); }
-        #status { margin: 15px; font-weight: bold; }
-        .ref-box { margin-top: 30px; padding: 20px; border: 1px dashed var(--accent); display: none; border-radius: 10px; }
-        .copy-btn { background: var(--accent); color: black; border: none; padding: 5px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        :root { --accent: #00f2ff; --bg: #010a13; --panel: #111a24; --gold: #ffaa00; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        
+        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); }
+        .logo { font-weight: bold; letter-spacing: 2px; color: var(--accent); }
+        .lang-select button { background: none; border: 1px solid #333; color: #888; cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+        .lang-select button.active { border-color: var(--accent); color: white; }
+
+        .container { max-width: 450px; margin: 20px auto; padding: 20px; }
+        .stat-box { background: var(--panel); border: 1px dashed var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
+        .quote-card { background: linear-gradient(135deg, #1e3a8a, #1e293b); border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--accent); }
+        .quote-card p { font-weight: bold; text-transform: uppercase; line-height: 1.4; margin: 0; }
+
+        .info-row { background: var(--panel); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 2px solid #0a1118; }
+        .label { color: #888; font-weight: bold; }
+        .value { color: var(--accent); font-weight: bold; }
+        .value.max { color: var(--accent); }
+
+        .ref-link { background: #0a1118; padding: 12px; border-radius: 8px; font-size: 0.8rem; color: var(--accent); word-break: break-all; margin-bottom: 10px; border: 1px solid #222; }
+        
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 15px; font-size: 1rem; }
+        .btn-copy { background: #3b424d; color: white; text-transform: uppercase; }
+        .btn-founder { background: linear-gradient(to right, #f59e0b, #d97706); color: white; text-transform: uppercase; margin-top: 10px; }
+        .btn-join { background: var(--accent); color: black; font-size: 1.2rem; }
+
+        .footer-tag { color: var(--gold); font-size: 0.8rem; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
+        
+        #cabinet { display: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <button class="lang-btn" onclick="setLang('ru')">RU</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+    <div class="logo">OCEAN INFINITY 🌊</div>
+    <div class="lang-select">
+        <button onclick="setLang('ru')" id="btn-ru" class="active">RU</button>
+        <button onclick="setLang('en')" id="btn-en">EN</button>
+        <button onclick="setLang('fr')" id="btn-fr">FR</button>
+    </div>
 </header>
 
-<div class="container">
-    <h1 id="title">OCEAN INFINITY</h1>
-    <p class="motto" id="motto">Семья — это сила Океана</p>
-    <p id="status" style="color: #ff4d4d;">Кошелек не подключен</p>
+<div class="container" id="welcome-screen">
+    <div class="quote-card">
+        <p id="main-quote">«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»</p>
+    </div>
+    <button class="btn btn-join" onclick="connectWallet()" id="connect-btn">ВСТУПИТЬ В СЕМЬЮ</button>
+</div>
 
-    <div class="grid">
-        <div class="card">Lvl 1<span class="price">$10</span></div>
-        <div class="card">Lvl 2<span class="price">$20</span></div>
-        <div class="card">Lvl 3<span class="price">$30</span></div>
-        <div class="card">Lvl 4<span class="price">$45</span></div>
-        <div class="card">Lvl 5<span class="price">$60</span></div>
-        <div class="card">Lvl 6<span class="price">$80</span></div>
-        <div class="card">Lvl 7<span class="price">$100</span></div>
-        <div class="card">Lvl 8<span class="price">$140</span></div>
-        <div class="card">Lvl 9<span class="price">$180</span></div>
-        <div class="card">Lvl 10<span class="price">$240</span></div>
-        <div class="card">Lvl 11<span class="price">$300</span></div>
-        <div class="card">Lvl 12<span class="price">$380</span></div>
-        <div class="card">Lvl 13<span class="price">$480</span></div>
-        <div class="card">Lvl 14<span class="price">$600</span></div>
-        <div class="card">Lvl 15<span class="price">$750</span></div>
+<div class="container" id="cabinet">
+    <div class="stat-box">
+        <span class="label" id="in-family-label">В СЕМЬЕ УЖЕ:</span> <span class="value">...</span>
     </div>
 
-    <button class="btn" onclick="connectAndJoin()" id="mainBtn">ВСТУПИТЬ В СЕМЬЮ</button>
-
-    <div id="refBox" class="ref-box">
-        <span id="refText">Ваша ссылка:</span>
-        <span id="refLink" style="color: var(--accent); word-break: break-all;"></span>
-        <button class="copy-btn" onclick="copyRef()" id="copyBtn">Копировать</button>
+    <div class="quote-card">
+        <p id="cabinet-quote">«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»</p>
     </div>
+
+    <div class="info-row">
+        <span class="label">ID:</span>
+        <span class="value">1 (FOUNDER)</span>
+    </div>
+
+    <div class="info-row">
+        <span class="label" id="level-label">УРОВЕНЬ:</span>
+        <span class="value max">15 (MAX)</span>
+    </div>
+
+    <div class="ref-link" id="ref-url">https://oceanin.github.io/?ref=0x9f1...</div>
+
+    <button class="btn btn-copy" onclick="copyLink()" id="copy-btn">КОПИРОВАТЬ ССЫЛКУ</button>
+
+    <button class="btn btn-founder" id="founder-btn">УПРАВЛЕНИЕ FOUNDER №1</button>
+    
+    <div class="footer-tag" id="mode-tag">РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН</div>
 </div>
 
 <script>
-    const translations = {
-        ru: { motto: "Семья — это сила Океана", btn: "ВСТУПИТЬ В СЕМЬЮ", status: "Подключен: ", ref: "Ваша ссылка:", copy: "Копировать", alert: "Ссылка скопирована!" },
-        en: { motto: "Family is the Ocean's power", btn: "JOIN THE FAMILY", status: "Connected: ", ref: "Your link:", copy: "Copy", alert: "Link copied!" },
-        fr: { motto: "La famille est la force de l'Océan", btn: "REJOINDRE LA FAMILLE", status: "Connecté: ", ref: "Votre lien:", copy: "Copier", alert: "Lien copié!" }
+    const texts = {
+        ru: {
+            quote: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»",
+            join: "ВСТУПИТЬ В СЕМЬЮ",
+            infamily: "В СЕМЬЕ УЖЕ:",
+            level: "УРОВЕНЬ:",
+            copy: "КОПИРОВАТЬ ССЫЛКУ",
+            founder: "УПРАВЛЕНИЕ FOUNDER №1",
+            mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН",
+            copied: "Ссылка скопирована!"
+        },
+        en: {
+            quote: "«MONEY IS PRINTED HERE. EMPIRES ARE BUILT HERE. YOUR FAMILY IS YOUR FORTRESS!»",
+            join: "JOIN THE FAMILY",
+            infamily: "ALREADY IN FAMILY:",
+            level: "LEVEL:",
+            copy: "COPY LINK",
+            founder: "MANAGE FOUNDER #1",
+            mode: "FOUNDER MODE ACTIVATED",
+            copied: "Link copied!"
+        },
+        fr: {
+            quote: "«ICI ON IMPRIME L'ARGENT. ICI ON CONSTRUIT DES EMPIRES. TA FAMILLE EST TA FORTERESSE!»",
+            join: "REJOINDRE LA FAMILLE",
+            infamily: "DÉJÀ DANS LA FAMILLE:",
+            level: "NIVEAU:",
+            copy: "COPIER LE LIEN",
+            founder: "GÉRER FOUNDER №1",
+            mode: "MODE FONDATEUR ACTIVÉ",
+            copied: "Lien copié!"
+        }
     };
 
-    let currentLang = 'ru';
-
     function setLang(lang) {
-        currentLang = lang;
-        document.getElementById('motto').innerText = translations[lang].motto;
-        document.getElementById('mainBtn').innerText = translations[lang].btn;
-        document.getElementById('refText').innerText = translations[lang].ref;
-        document.getElementById('copyBtn').innerText = translations[lang].copy;
+        document.querySelectorAll('.lang-select button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + lang).classList.add('active');
+        
+        document.getElementById('main-quote').innerText = texts[lang].quote;
+        document.getElementById('cabinet-quote').innerText = texts[lang].quote;
+        document.getElementById('connect-btn').innerText = texts[lang].join;
+        document.getElementById('in-family-label').innerText = texts[lang].infamily;
+        document.getElementById('level-label').innerText = texts[lang].level;
+        document.getElementById('copy-btn').innerText = texts[lang].copy;
+        document.getElementById('founder-btn').innerText = texts[lang].founder;
+        document.getElementById('mode-tag').innerText = texts[lang].mode;
     }
 
-    async function connectAndJoin() {
-        if (typeof window.ethereum !== 'undefined') {
+    async function connectWallet() {
+        if (window.ethereum) {
             try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
                 const user = accounts[0];
-                
-                document.getElementById('status').innerText = translations[currentLang].status + user;
-                document.getElementById('status').style.color = "#00ff00";
-
-                // Показ реф-ссылки
-                const refURL = window.location.origin + window.location.pathname + "?ref=" + user;
-                document.getElementById('refBox').style.display = 'block';
-                document.getElementById('refLink').innerText = refURL;
-
-                console.log("MetaMask подключен. Контракт: 0x04400e4d39C539486cc644e95197119b720a8B17");
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('cabinet').style.display = 'block';
+                document.getElementById('ref-url').innerText = window.location.origin + window.location.pathname + "?ref=" + user;
             } catch (err) {
-                alert("Ошибка подключения: " + err.message);
+                alert("Ошибка подключения");
             }
         } else {
-            alert("Пожалуйста, установите MetaMask!");
+            alert("Установите MetaMask!");
         }
     }
 
-    function copyRef() {
-        const link = document.getElementById('refLink').innerText;
+    function copyLink() {
+        const link = document.getElementById('ref-url').innerText;
         navigator.clipboard.writeText(link);
-        alert(translations[currentLang].alert);
+        alert("OK!");
     }
 </script>
 </body>
