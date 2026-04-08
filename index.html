@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Infinity | Семья</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <style>
+        :root { --main-blue: #0077be; --neon-cyan: #00f2ff; --dark-bg: #010a13; }
+        body { background: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
+        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .hero { padding: 100px 20px; background: linear-gradient(180deg, rgba(0,119,190,0.2) 0%, var(--dark-bg) 100%); }
+        h1 { font-size: 3rem; text-shadow: 0 0 20px var(--neon-cyan); margin-bottom: 10px; }
+        .motto { font-size: 1.5rem; color: var(--neon-cyan); font-style: italic; }
+        .stats-box { display: flex; justify-content: center; gap: 20px; margin: 30px 0; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--main-blue); min-width: 150px; }
+        .btn { background: var(--main-blue); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px var(--main-blue); font-weight: bold; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--neon-cyan); }
+        .lang-btns button { background: none; border: 1px solid white; color: white; cursor: pointer; margin: 0 5px; padding: 5px 10px; border-radius: 5px; }
+        .ref-section { margin-top: 50px; padding: 20px; background: rgba(0,242,255,0.05); }
+        .copy-btn { background: #333; color: #00f2ff; border: 1px solid #00f2ff; padding: 8px 20px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">OCEAN INFINITY</div>
+    <div class="lang-btns">
+        <button onclick="setLang('ru')">RU</button>
+        <button onclick="setLang('en')">EN</button>
+        <button onclick="setLang('kg')">KG</button>
+        <button onclick="setLang('cn')">CN</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1 id="title">OCEAN INFINITY</h1>
+    <p class="motto" id="motto">Семья — это сила Океана</p>
+    <p id="motivation">Один поток может высохнуть. Океан — никогда. Вступай в семью и создай бесконечный доход.</p>
+    
+    <div class="stats-box">
+        <div class="stat-card">
+            <h3 id="stat-people">Людей в семье</h3>
+            <div id="userCount" style="font-size: 2rem; color: var(--neon-cyan);">...</div>
+        </div>
+    </div>
+
+    <button class="btn" onclick="connectAndBuy()" id="buyBtn">ВСТУПИТЬ В СЕМЬЮ</button>
+</section>
+
+<section class="ref-section" id="refArea" style="display:none;">
+    <p id="refTitle">Твоя реферальная ссылка:</p>
+    <span id="refLink" style="font-weight: bold; color: var(--neon-cyan);"></span>
+    <button class="copy-btn" onclick="copyRef()">Копировать</button>
+</section>
+
+<script>
+    const contractAddress = "0x04400e4d39C539486cc644e95197119b720a8B17";
+    const translations = {
+        ru: { title: "OCEAN INFINITY", motto: "Семья — это сила Океана", buy: "ВСТУПИТЬ В СЕМЬЮ", people: "Людей в семье", motivation: "Один поток может высохнуть. Океан — никогда. Вступай в семью и создай бесконечный доход." },
+        en: { title: "OCEAN INFINITY", motto: "Family is the Ocean's power", buy: "JOIN THE FAMILY", people: "Family Members", motivation: "A single stream can dry up. An ocean never will. Join the family and create infinite income." },
+        kg: { title: "OCEAN INFINITY", motto: "Үй-бүлө - бул Океандын күчү", buy: "ҮЙ-БҮЛӨГӨ КОШУЛУУ", people: "Үй-бүлө мүчөлөрү", motivation: "Бир булак кургап калышы мүмкүн. Океан эч качан. Үй-бүлөгө кошулуп, чексиз киреше түзүңүз." },
+        cn: { title: "OCEAN INFINITY", motto: "家庭就是海洋的力量", buy: "加入家庭", people: "家庭成员", motivation: "单条溪流会枯竭，但海洋永不。加入这个大家庭，创造无限收入。" }
+    };
+
+    function setLang(lang) {
+        document.getElementById('title').innerText = translations[lang].title;
+        document.getElementById('motto').innerText = translations[lang].motto;
+        document.getElementById('buyBtn').innerText = translations[lang].buy;
+        document.getElementById('stat-people').innerText = translations[lang].people;
+        document.getElementById('motivation').innerText = translations[lang].motivation;
+    }
+
+    async function connectAndBuy() {
+        if (window.ethereum) {
+            const web3 = new Web3(window.ethereum);
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const accounts = await web3.eth.getAccounts();
+            const userAccount = accounts[0];
+            
+            // Здесь логика вызова функции твоего контракта register()
+            alert("Кошелек подключен: " + userAccount + "\nЗавтра активируем уровень!");
+            
+            document.getElementById('refArea').style.display = 'block';
+            document.getElementById('refLink').innerText = window.location.origin + "?ref=" + userAccount;
+        } else {
+            alert("Пожалуйста, установите MetaMask!");
+        }
+    }
+
+    function copyRef() {
+        const text = document.getElementById('refLink').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Ссылка скопирована!");
+    }
+</script>
+
+</body>
+</html>
