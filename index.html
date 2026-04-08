@@ -2,155 +2,145 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ocean Infinity | Founder Board</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OCEAN INFINITY</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        :root { --accent: #00f2ff; --bg: #010a13; --panel: #111a24; --gold: #ffaa00; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
-        
-        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); }
-        .logo { font-weight: bold; letter-spacing: 2px; color: var(--accent); }
-        .lang-select button { background: none; border: 1px solid #333; color: #888; cursor: pointer; padding: 5px 10px; border-radius: 4px; }
-        .lang-select button.active { border-color: var(--accent); color: white; }
-
-        .container { max-width: 450px; margin: 20px auto; padding: 20px; }
-        .stat-box { background: var(--panel); border: 1px dashed var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
-        .quote-card { background: linear-gradient(135deg, #1e3a8a, #1e293b); border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--accent); }
-        .quote-card p { font-weight: bold; text-transform: uppercase; line-height: 1.4; margin: 0; }
-
-        .info-row { background: var(--panel); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 2px solid #0a1118; }
-        .label { color: #888; font-weight: bold; }
-        .value { color: var(--accent); font-weight: bold; }
-        .value.max { color: var(--accent); }
-
-        .ref-link { background: #0a1118; padding: 12px; border-radius: 8px; font-size: 0.8rem; color: var(--accent); word-break: break-all; margin-bottom: 10px; border: 1px solid #222; }
-        
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 15px; font-size: 1rem; }
-        .btn-copy { background: #3b424d; color: white; text-transform: uppercase; }
-        .btn-founder { background: linear-gradient(to right, #f59e0b, #d97706); color: white; text-transform: uppercase; margin-top: 10px; }
-        .btn-join { background: var(--accent); color: black; font-size: 1.2rem; }
-
-        .footer-tag { color: var(--gold); font-size: 0.8rem; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
-        
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #020617; color: white; text-align: center; margin: 0; padding: 20px; }
+        .lang-switch { position: absolute; top: 20px; right: 20px; }
+        .lang-btn { background: #1e3a8a; color: white; border: 1px solid #3b82f6; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .card { background: #0f172a; border-radius: 25px; padding: 35px 30px; max-width: 380px; margin: 40px auto; border: 1px solid #1e3a8a; box-shadow: 0 0 50px rgba(0,0,0,0.8); position: relative; }
+        h1 { color: #3b82f6; text-transform: uppercase; letter-spacing: 4px; font-size: 22px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(59,130,246,0.5); }
+        .total-box { border: 1px dashed #3b82f6; border-radius: 15px; padding: 10px; margin-bottom: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .promo-box { background: linear-gradient(135deg, #1e3a8a 0%, #020617 100%); padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #3b82f6; }
+        .promo-text { font-weight: 900; font-size: 13px; text-transform: uppercase; line-height: 1.5; color: #fff; }
+        .stat-item { background: #020617; padding: 16px; border-radius: 12px; border: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .stat-label { color: #94a3b8; font-weight: bold; font-size: 14px; }
+        .stat-value { color: #3b82f6; font-weight: 900; }
+        .btn-main { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 8px 16px rgba(59,130,246,0.3); }
+        .btn-orange { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 16px rgba(245,158,11,0.3); }
+        input { width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: #60a5fa; text-align: center; font-weight: bold; box-sizing: border-box; font-size: 11px; }
         #cabinet { display: none; }
+        .footer-text { color: #f59e0b; font-size: 11px; margin-top: 15px; text-transform: uppercase; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">OCEAN INFINITY 🌊</div>
-    <div class="lang-select">
-        <button onclick="setLang('ru')" id="btn-ru" class="active">RU</button>
-        <button onclick="setLang('en')" id="btn-en">EN</button>
-        <button onclick="setLang('fr')" id="btn-fr">FR</button>
-    </div>
-</header>
+    <div class="card">
+        <div class="lang-switch">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
 
-<div class="container" id="welcome-screen">
-    <div class="quote-card">
-        <p id="main-quote">«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»</p>
-    </div>
-    <button class="btn btn-join" onclick="connectWallet()" id="connect-btn">ВСТУПИТЬ В СЕМЬЮ</button>
-</div>
-
-<div class="container" id="cabinet">
-    <div class="stat-box">
-        <span class="label" id="in-family-label">В СЕМЬЕ УЖЕ:</span> <span class="value">...</span>
-    </div>
-
-    <div class="quote-card">
-        <p id="cabinet-quote">«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»</p>
-    </div>
-
-    <div class="info-row">
-        <span class="label">ID:</span>
-        <span class="value">1 (FOUNDER)</span>
-    </div>
-
-    <div class="info-row">
-        <span class="label" id="level-label">УРОВЕНЬ:</span>
-        <span class="value max">15 (MAX)</span>
-    </div>
-
-    <div class="ref-link" id="ref-url">https://oceanin.github.io/?ref=0x9f1...</div>
-
-    <button class="btn btn-copy" onclick="copyLink()" id="copy-btn">КОПИРОВАТЬ ССЫЛКУ</button>
-
-    <button class="btn btn-founder" id="founder-btn">УПРАВЛЕНИЕ FOUNDER №1</button>
-    
-    <div class="footer-tag" id="mode-tag">РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН</div>
-</div>
-
-<script>
-    const texts = {
-        ru: {
-            quote: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»",
-            join: "ВСТУПИТЬ В СЕМЬЮ",
-            infamily: "В СЕМЬЕ УЖЕ:",
-            level: "УРОВЕНЬ:",
-            copy: "КОПИРОВАТЬ ССЫЛКУ",
-            founder: "УПРАВЛЕНИЕ FOUNDER №1",
-            mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН",
-            copied: "Ссылка скопирована!"
-        },
-        en: {
-            quote: "«MONEY IS PRINTED HERE. EMPIRES ARE BUILT HERE. YOUR FAMILY IS YOUR FORTRESS!»",
-            join: "JOIN THE FAMILY",
-            infamily: "ALREADY IN FAMILY:",
-            level: "LEVEL:",
-            copy: "COPY LINK",
-            founder: "MANAGE FOUNDER #1",
-            mode: "FOUNDER MODE ACTIVATED",
-            copied: "Link copied!"
-        },
-        fr: {
-            quote: "«ICI ON IMPRIME L'ARGENT. ICI ON CONSTRUIT DES EMPIRES. TA FAMILLE EST TA FORTERESSE!»",
-            join: "REJOINDRE LA FAMILLE",
-            infamily: "DÉJÀ DANS LA FAMILLE:",
-            level: "NIVEAU:",
-            copy: "COPIER LE LIEN",
-            founder: "GÉRER FOUNDER №1",
-            mode: "MODE FONDATEUR ACTIVÉ",
-            copied: "Lien copié!"
-        }
-    };
-
-    function setLang(lang) {
-        document.querySelectorAll('.lang-select button').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn-' + lang).classList.add('active');
+        <h1>OCEAN INFINITY 🌊</h1>
+        <div class="total-box"><span id="t-family">В СЕМЬЕ УЖЕ</span>: <span id="totalUsers" style="color:white;">...</span></div>
         
-        document.getElementById('main-quote').innerText = texts[lang].quote;
-        document.getElementById('cabinet-quote').innerText = texts[lang].quote;
-        document.getElementById('connect-btn').innerText = texts[lang].join;
-        document.getElementById('in-family-label').innerText = texts[lang].infamily;
-        document.getElementById('level-label').innerText = texts[lang].level;
-        document.getElementById('copy-btn').innerText = texts[lang].copy;
-        document.getElementById('founder-btn').innerText = texts[lang].founder;
-        document.getElementById('mode-tag').innerText = texts[lang].mode;
-    }
+        <div class="promo-box">
+            <div id="promo-text" class="promo-text">«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»</div>
+        </div>
 
-    async function connectWallet() {
-        if (window.ethereum) {
-            try {
-                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                const user = accounts[0];
-                document.getElementById('welcome-screen').style.display = 'none';
-                document.getElementById('cabinet').style.display = 'block';
-                document.getElementById('ref-url').innerText = window.location.origin + window.location.pathname + "?ref=" + user;
-            } catch (err) {
-                alert("Ошибка подключения");
+        <button id="connectBtn" class="btn-main" onclick="connect()">ВОЙТИ В СИСТЕМУ</button>
+
+        <div id="cabinet">
+            <div class="stat-item"><span class="stat-label">ID:</span> <span id="ui-id" class="stat-value">...</span></div>
+            <div class="stat-item"><span id="t-level" class="stat-label">УРОВЕНЬ:</span> <span id="ui-lvl" class="stat-value">...</span></div>
+            <input type="text" id="refLink" readonly>
+            <button id="t-copy" class="btn-main" style="background: #334155; font-size: 12px; margin-bottom: 10px; box-shadow:none;" onclick="copyLink()">КОПИРОВАТЬ ССЫЛКУ</button>
+            <button id="actionBtn" class="btn-main" onclick="handleAction()">...</button>
+            <div id="footerStatus" class="footer-text"></div>
+        </div>
+    </div>
+
+    <script>
+        const OWNER = "0x9f1053b119d1565e641d0694c3cf6c6bf e644da7".toLowerCase().replace(/\s/g, '');
+        const CONTRACT = "0x2Edf764970BFa32Bfd6e0799682026814BcDF24B";
+        let wallet, provider;
+        let currentLang = 'ru';
+
+        const i18n = {
+            ru: {
+                family: "В СЕМЬЕ УЖЕ",
+                promo: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»",
+                login: "ВОЙТИ В СИСТЕМУ",
+                level: "УРОВЕНЬ",
+                copy: "КОПИРОВАТЬ ССЫЛКУ",
+                join: "ВСТУПИТЬ В СЕМЬЮ ($10)",
+                upgrade: "ПОВЫСИТЬ УРОВЕНЬ",
+                admin: "УПРАВЛЕНИЕ FOUNDER №1",
+                founder_mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН"
+            },
+            en: {
+                family: "FAMILY SIZE",
+                promo: "«HERE WE PRINT MONEY. HERE WE BUILD EMPIRES. YOUR FAMILY IS YOUR FORTRESS!»",
+                login: "LOGIN TO SYSTEM",
+                level: "LEVEL",
+                copy: "COPY REFERRAL LINK",
+                join: "JOIN THE FAMILY ($10)",
+                upgrade: "UPGRADE LEVEL",
+                admin: "FOUNDER №1 CONTROL",
+                founder_mode: "FOUNDER MODE ACTIVATED"
             }
-        } else {
-            alert("Установите MetaMask!");
-        }
-    }
+        };
 
-    function copyLink() {
-        const link = document.getElementById('ref-url').innerText;
-        navigator.clipboard.writeText(link);
-        alert("OK!");
-    }
-</script>
+        function setLang(lang) {
+            currentLang = lang;
+            document.getElementById('t-family').innerText = i18n[lang].family;
+            document.getElementById('promo-text').innerText = i18n[lang].promo;
+            document.getElementById('connectBtn').innerText = i18n[lang].login;
+            document.getElementById('t-level').innerText = i18n[lang].level;
+            document.getElementById('t-copy').innerText = i18n[lang].copy;
+            if (wallet) showApp(); 
+        }
+
+        async function connect() {
+            if (window.ethereum) {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                const accs = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                wallet = accs[0].toLowerCase();
+                showApp();
+            } else if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                window.location.href = "https://metamask.app.link/dapp/" + window.location.href.replace(/^https?:\/\//, '');
+            } else { alert("Please install MetaMask!"); }
+        }
+
+        async function showApp() {
+            document.getElementById('connectBtn').style.display = 'none';
+            document.getElementById('cabinet').style.display = 'block';
+            document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + wallet;
+
+            const con = new ethers.Contract(CONTRACT, ["function users(address) view returns (bool isExist, uint256 id, uint8 level)", "function lastUserId() view returns (uint256)"], provider);
+
+            if (wallet === OWNER) {
+                document.getElementById('ui-id').innerText = "1 (FOUNDER)";
+                document.getElementById('ui-lvl').innerText = "15 (MAX)";
+                document.getElementById('actionBtn').innerText = i18n[currentLang].admin;
+                document.getElementById('actionBtn').classList.add('btn-orange');
+                document.getElementById('footerStatus').innerText = i18n[currentLang].founder_mode;
+            } else {
+                try {
+                    const u = await con.users(wallet);
+                    document.getElementById('ui-id').innerText = u.isExist ? u.id : "OFFLINE";
+                    document.getElementById('ui-lvl').innerText = u.level || 0;
+                    document.getElementById('actionBtn').innerText = u.isExist ? i18n[currentLang].upgrade : i18n[currentLang].join;
+                } catch(e) {}
+            }
+            try {
+                const total = await con.lastUserId();
+                document.getElementById('totalUsers').innerText = total.toString();
+            } catch(e) {}
+        }
+
+        function copyLink() {
+            const i = document.getElementById("refLink"); i.select(); document.execCommand("copy");
+            const btn = document.getElementById('t-copy');
+            const oldText = btn.innerText;
+            btn.innerText = "COPIED! / СКОПИРОВАНО!";
+            setTimeout(() => btn.innerText = oldText, 2000);
+        }
+
+        function handleAction() {
+            if (wallet === OWNER) alert("Spartan, system is ready!");
+        }
+    </script>
 </body>
 </html>
