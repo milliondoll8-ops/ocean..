@@ -7,8 +7,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #020617; color: white; text-align: center; margin: 0; padding: 20px; }
-        .lang-switch { position: absolute; top: 20px; right: 20px; }
-        .lang-btn { background: #1e3a8a; color: white; border: 1px solid #3b82f6; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .lang-switch { position: absolute; top: 20px; right: 20px; display: flex; gap: 5px; }
+        .lang-btn { background: #1e3a8a; color: white; border: 1px solid #3b82f6; padding: 5px 8px; border-radius: 8px; cursor: pointer; font-size: 10px; font-weight: bold; }
         .card { background: #0f172a; border-radius: 25px; padding: 35px 30px; max-width: 380px; margin: 40px auto; border: 1px solid #1e3a8a; box-shadow: 0 0 50px rgba(0,0,0,0.8); position: relative; }
         h1 { color: #3b82f6; text-transform: uppercase; letter-spacing: 4px; font-size: 22px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(59,130,246,0.5); }
         .total-box { border: 1px dashed #3b82f6; border-radius: 15px; padding: 10px; margin-bottom: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; }
@@ -17,7 +17,7 @@
         .stat-item { background: #020617; padding: 16px; border-radius: 12px; border: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .stat-label { color: #94a3b8; font-weight: bold; font-size: 14px; }
         .stat-value { color: #3b82f6; font-weight: 900; }
-        .btn-main { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 8px 16px rgba(59,130,246,0.3); }
+        .btn-main { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 8px 16px rgba(59,130,246,0.3); outline: none; }
         .btn-orange { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 16px rgba(245,158,11,0.3); }
         input { width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px; border: 1px solid #1e293b; background: #020617; color: #60a5fa; text-align: center; font-weight: bold; box-sizing: border-box; font-size: 11px; }
         #cabinet { display: none; }
@@ -30,6 +30,7 @@
         <div class="lang-switch">
             <button class="lang-btn" onclick="setLang('ru')">RU</button>
             <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('fr')">FR</button>
         </div>
 
         <h1>OCEAN INFINITY 🌊</h1>
@@ -52,34 +53,17 @@
     </div>
 
     <script>
-        const OWNER = "0x9f1053b119d1565e641d0694c3cf6c6bf e644da7".toLowerCase().replace(/\s/g, '');
+        const OWNER = "0x9f1053b119d1565e641d0694c3cf6c6bfe644da7".toLowerCase();
         const CONTRACT = "0x2Edf764970BFa32Bfd6e0799682026814BcDF24B";
-        let wallet, provider;
+        const USDT_ADDR = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT Polygon
+        
+        let wallet, provider, signer;
         let currentLang = 'ru';
 
         const i18n = {
-            ru: {
-                family: "В СЕМЬЕ УЖЕ",
-                promo: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»",
-                login: "ВОЙТИ В СИСТЕМУ",
-                level: "УРОВЕНЬ",
-                copy: "КОПИРОВАТЬ ССЫЛКУ",
-                join: "ВСТУПИТЬ В СЕМЬЮ ($10)",
-                upgrade: "ПОВЫСИТЬ УРОВЕНЬ",
-                admin: "УПРАВЛЕНИЕ FOUNDER №1",
-                founder_mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН"
-            },
-            en: {
-                family: "FAMILY SIZE",
-                promo: "«HERE WE PRINT MONEY. HERE WE BUILD EMPIRES. YOUR FAMILY IS YOUR FORTRESS!»",
-                login: "LOGIN TO SYSTEM",
-                level: "LEVEL",
-                copy: "COPY REFERRAL LINK",
-                join: "JOIN THE FAMILY ($10)",
-                upgrade: "UPGRADE LEVEL",
-                admin: "FOUNDER №1 CONTROL",
-                founder_mode: "FOUNDER MODE ACTIVATED"
-            }
+            ru: { family: "В СЕМЬЕ УЖЕ", promo: "«ЗДЕСЬ ПЕЧАТАЮТ ДЕНЬГИ. ЗДЕСЬ СТРОЯТ ИМПЕРИИ. ТВОЯ СЕМЬЯ — ТВОЯ КРЕПОСТЬ!»", login: "ВОЙТИ В СИСТЕМУ", level: "УРОВЕНЬ", copy: "КОПИРОВАТЬ ССЫЛКУ", join: "ВСТУПИТЬ В СЕМЬЮ ($10)", upgrade: "ПОВЫСИТЬ УРОВЕНЬ", admin: "УПРАВЛЕНИЕ FOUNDER №1", founder_mode: "РЕЖИМ ОСНОВАТЕЛЯ АКТИВИРОВАН", copied: "СКОПИРОВАНО!", wait: "Ожидание транзакции..." },
+            en: { family: "FAMILY SIZE", promo: "«HERE WE PRINT MONEY. HERE WE BUILD EMPIRES. YOUR FAMILY IS YOUR FORTRESS!»", login: "LOGIN TO SYSTEM", level: "LEVEL", copy: "COPY REFERRAL LINK", join: "JOIN THE FAMILY ($10)", upgrade: "UPGRADE LEVEL", admin: "FOUNDER №1 CONTROL", founder_mode: "FOUNDER MODE ACTIVATED", copied: "COPIED!", wait: "Waiting for transaction..." },
+            fr: { family: "DANS LA FAMILLE", promo: "«ICI ON IMPRIME L'ARGENT. ICI ON CONSTRUIT DES EMPIRES. TA FAMILLE EST TA FORTERESSE!»", login: "SE CONNECTER", level: "NIVEAU", copy: "COPIER LE LIEN", join: "REJOINDRE LA FAMILLE ($10)", upgrade: "MONTER DE NIVEAU", admin: "CONTRÔLE FONDATEUR №1", founder_mode: "MODE FONDATEUR ACTIVÉ", copied: "COPIÉ!", wait: "Attente de transaction..." }
         };
 
         function setLang(lang) {
@@ -95,8 +79,9 @@
         async function connect() {
             if (window.ethereum) {
                 provider = new ethers.providers.Web3Provider(window.ethereum);
-                const accs = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                wallet = accs[0].toLowerCase();
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                wallet = (await signer.getAddress()).toLowerCase();
                 showApp();
             } else if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
                 window.location.href = "https://metamask.app.link/dapp/" + window.location.href.replace(/^https?:\/\//, '');
@@ -117,29 +102,53 @@
                 document.getElementById('actionBtn').classList.add('btn-orange');
                 document.getElementById('footerStatus').innerText = i18n[currentLang].founder_mode;
             } else {
-                try {
-                    const u = await con.users(wallet);
-                    document.getElementById('ui-id').innerText = u.isExist ? u.id : "OFFLINE";
-                    document.getElementById('ui-lvl').innerText = u.level || 0;
-                    document.getElementById('actionBtn').innerText = u.isExist ? i18n[currentLang].upgrade : i18n[currentLang].join;
-                } catch(e) {}
+                const u = await con.users(wallet);
+                document.getElementById('ui-id').innerText = u.isExist ? u.id.toString() : "OFFLINE";
+                document.getElementById('ui-lvl').innerText = u.level.toString();
+                document.getElementById('actionBtn').innerText = u.isExist ? i18n[currentLang].upgrade : i18n[currentLang].join;
             }
+            const total = await con.lastUserId();
+            document.getElementById('totalUsers').innerText = total.toString();
+        }
+
+        async function handleAction() {
+            if (wallet === OWNER) return alert("System Ready, Boss.");
+
             try {
-                const total = await con.lastUserId();
-                document.getElementById('totalUsers').innerText = total.toString();
-            } catch(e) {}
+                const usdt = new ethers.Contract(USDT_ADDR, ["function approve(address spender, uint256 amount) public returns (bool)", "function allowance(address owner, address spender) view returns (uint256)"], signer);
+                const main = new ethers.Contract(CONTRACT, ["function registrationExt(address referrer) public"], signer);
+                
+                const amount = ethers.utils.parseUnits("10", 6); // 10 USDT
+                const urlParams = new URLSearchParams(window.location.search);
+                const ref = urlParams.get('ref') || OWNER;
+
+                document.getElementById('actionBtn').innerText = i18n[currentLang].wait;
+
+                // 1. Проверка разрешения (Approve)
+                const allow = await usdt.allowance(wallet, CONTRACT);
+                if (allow.lt(amount)) {
+                    const txA = await usdt.approve(CONTRACT, amount);
+                    await txA.wait();
+                }
+
+                // 2. Регистрация
+                const txR = await main.registrationExt(ref);
+                await txR.wait();
+                
+                alert("Success! / Успех!");
+                location.reload();
+            } catch(e) {
+                alert("Error: " + (e.data?.message || e.message));
+                showApp();
+            }
         }
 
         function copyLink() {
             const i = document.getElementById("refLink"); i.select(); document.execCommand("copy");
             const btn = document.getElementById('t-copy');
             const oldText = btn.innerText;
-            btn.innerText = "COPIED! / СКОПИРОВАНО!";
+            btn.innerText = i18n[currentLang].copied;
             setTimeout(() => btn.innerText = oldText, 2000);
-        }
-
-        function handleAction() {
-            if (wallet === OWNER) alert("Spartan, system is ready!");
         }
     </script>
 </body>
